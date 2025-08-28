@@ -8,7 +8,7 @@ const SplashScreen = ({navigation}) => {
   useEffect(()=> {
     setTimeout(() => {
         navigation.navigate('welcome')
-    }, 3000)
+    }, 2000)
   }, [])
 
   return (

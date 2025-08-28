@@ -18,7 +18,7 @@ const Pagination = ({index}) => {
     )
 }
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({navigation}) => {
     const [welcomeListIndex, setWelcomeListIndex] = useState(0);
     const welcomeList = useRef()
 
@@ -57,7 +57,7 @@ const WelcomeScreen = () => {
         <Separator height={Display.setHeight(10)} />
         {
             welcomeListIndex === 2 ? (
-                <TouchableOpacity style={styles.gettingStartedButton} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.gettingStartedButton} activeOpacity={0.8} onPress={() => navigation.navigate('signin')}>
                     <Text style={styles.gettingStartedButtonText}>Get Started</Text>
                 </TouchableOpacity>
             ) : (
