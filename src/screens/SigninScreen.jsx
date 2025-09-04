@@ -3,14 +3,77 @@ import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View }
 import Separator from '~/components/Separator'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Colors, Fonts, Images } from '~/contants'
 import { Display } from '~/utils'
 import { ToggleButton } from '~/components'
+import { AuthenticationService } from '../services';
+import LottieView from 'lottie-react-native';
+
+const inputStyle = (state) => {
+    switch (state) {
+        case 'valid':
+            return {
+                ...styles.inputContainer,
+                borderColor: Colors.SECONDARY_GREEN,
+                borderWidth: 1
+            }
+        case 'invalid' : {
+          return {
+            ...styles.inputContainer,
+            borderColor: Colors.DEFAULT_RED,
+            borderWidth: 1,
+          }
+        }    
+        default:
+            return styles.inputContainer
+    }
+}
+
+const showMarker = (state) => {
+    switch (state) {
+        case 'valid':
+            return <AntDesign
+              name = "checkcircleo"
+              color = {Colors.SECONDARY_GREEN}
+              size = {18}
+              style = {{marginLeft: 5}}
+            />
+        case 'invalid' : {
+          return <AntDesign
+              name = "closecircleo"
+              color = {Colors.DEFAULT_RED}
+              size = {18}
+              style = {{marginLeft: 5}}
+            />
+        }    
+        default:
+            return null
+    }
+}
 
 
 const SigninScreen = ({navigation}) => {
   
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const login = () => {
+      let user = { email, password };
+      console.log(user);
+      setIsLoading(true);
+      AuthenticationService.login(user).then((response) => {
+        setIsLoading(false);
+        console.log(response);
+        if (!response?.status) {
+          setErrorMessage(response?.message);
+        }
+      });
+    };
+
   return (
     <View style={styles.container}>
         <StatusBar barStyle={'dark-content'} backgroundColor={Colors.DEFAULT_WHITE} translucent />
@@ -26,34 +89,42 @@ const SigninScreen = ({navigation}) => {
 
         <View style={styles.inputContainer}>
             <View style={styles.inputSubContainer}>
-                <Feather name="user" size={22} color={Colors.DEFAULT_GREY} style={{marginRight: 10}} />
-                <TextInput placeholder='Username' placeholderTextColor={Colors.DEFAULT_GREY} selectionColor={Colors.DEFAULT_GREY} style={styles.inputText} />
+                <Feather name="mail" size={22} color={Colors.DEFAULT_GREY} style={{marginRight: 10}} />
+                <TextInput placeholder='Email' placeholderTextColor={Colors.DEFAULT_GREY} selectionColor={Colors.DEFAULT_GREY} style={styles.inputText} onChangeText={(text) => setEmail(text)} />
             </View>
         </View>
         <Separator height={15} />
         <View style={styles.inputContainer}>
             <View style={styles.inputSubContainer}>
                 <Feather name="lock" size={22} color={Colors.DEFAULT_GREY} style={{marginRight: 10}} />
-                <TextInput secureTextEntry={isPasswordShow ? false : true} placeholder='Password' placeholderTextColor={Colors.DEFAULT_GREY} selectionColor={Colors.DEFAULT_GREY} style={styles.inputText} />
+                <TextInput secureTextEntry={isPasswordShow ? false : true} placeholder='Password' placeholderTextColor={Colors.DEFAULT_GREY} selectionColor={Colors.DEFAULT_GREY} style={styles.inputText} onChangeText={(text) => setPassword(text)} />
                 <Feather name={isPasswordShow ? "eye" : "eye-off" } size={22} color={Colors.DEFAULT_GREY} style={{marginRight: 10}} onPress={() => setIsPasswordShow(!isPasswordShow)} />
             </View>
         </View>
 
-        <Text></Text>
+        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+
+        <Separator height={15} />
+
         <View style={styles.forgotPasswordContainer}>
             <View style={styles.toggleContainer}>
                 <ToggleButton size={0.5} />
                 <Text style={styles.rememberMeText}>Remember me</Text>
             </View>
-            <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+            <Text onPress={() => navigation.navigate('forgotPassword')} style={styles.forgotPasswordText}>Forgot Password</Text>
         </View>
 
-        <TouchableOpacity style={styles.signinButton}>
-            <Text style={styles.signinButtonText}>Sign In</Text>
+        <TouchableOpacity style={styles.signinButton} onPress={() => login()}>
+            
+            {isLoading ? (
+                      <LottieView source={Images.LOADING} autoPlay loop style={{ width: 50, height: 50 }} />
+                    ) : (
+                      <Text style={styles.signinButtonText}>Sign In</Text>
+                    )}
         </TouchableOpacity>
 
         <View style={styles.signupContainer}>
-            <Text style={styles.accountText}>Don't have an Account?</Text>
+            <Text style={styles.accountText}>{"Don't have an Account?"}</Text>
             <Text style={styles.signupText} onPress={() => navigation.navigate('signup')}>Sign Up</Text>
         </View>
 
@@ -240,7 +311,15 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
-  }
+  },
+   errorMessage: {
+      fontSize: 12,
+      lineHeight: 12 * 1.4,
+      color: Colors.DEFAULT_RED,
+      fontFamily: Fonts.POPPINS_MEDIUM,
+      marginHorizontal: 20,
+      marginTop: 5,
+    },
 
 })
 
