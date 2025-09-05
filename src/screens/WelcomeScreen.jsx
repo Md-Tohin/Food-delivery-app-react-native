@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { FlatList, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { GeneralAction } from '~/actions';
 import { WelcomeCard } from '~/components';
 import Separator from '~/components/Separator';
 import { Colors, Fonts, Images } from '~/contants';
 import General from '~/contants/General';
+import { StorageService } from '~/services';
 import { Display } from '~/utils';
 
 const pageStyle = isActive => isActive ? styles.page : {...styles.page, backgroundColor: Colors.DEFAULT_GREY}
@@ -33,6 +36,15 @@ const WelcomeScreen = ({navigation}) => {
           index: welcomeListIndex < 2 ? welcomeListIndex + 1 : welcomeListIndex,  
         })
     }
+
+    const dispatch = useDispatch();
+
+    const navigate = () => {
+      StorageService.setFirstTimeUse().then(() => {
+        dispatch(GeneralAction.setIsFirstTimeUse())
+      });
+    }
+
   return (
     <View style={styles.container}>
         <StatusBar barStyle={'dark-content'} backgroundColor={Colors.DEFAULT_WHITE} translucent />
@@ -57,7 +69,7 @@ const WelcomeScreen = ({navigation}) => {
         <Separator height={Display.setHeight(10)} />
         {
             welcomeListIndex === 2 ? (
-                <TouchableOpacity style={styles.gettingStartedButton} activeOpacity={0.8} onPress={() => navigation.navigate('signin')}>
+                <TouchableOpacity style={styles.gettingStartedButton} activeOpacity={0.8} onPress={() => navigate()}>
                     <Text style={styles.gettingStartedButtonText}>Get Started</Text>
                 </TouchableOpacity>
             ) : (

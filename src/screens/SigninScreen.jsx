@@ -3,55 +3,13 @@ import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View }
 import Separator from '~/components/Separator'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Colors, Fonts, Images } from '~/contants'
 import { Display } from '~/utils'
 import { ToggleButton } from '~/components'
-import { AuthenticationService } from '../services';
+import { AuthenticationService, StorageService } from '../services';
 import LottieView from 'lottie-react-native';
-
-const inputStyle = (state) => {
-    switch (state) {
-        case 'valid':
-            return {
-                ...styles.inputContainer,
-                borderColor: Colors.SECONDARY_GREEN,
-                borderWidth: 1
-            }
-        case 'invalid' : {
-          return {
-            ...styles.inputContainer,
-            borderColor: Colors.DEFAULT_RED,
-            borderWidth: 1,
-          }
-        }    
-        default:
-            return styles.inputContainer
-    }
-}
-
-const showMarker = (state) => {
-    switch (state) {
-        case 'valid':
-            return <AntDesign
-              name = "checkcircleo"
-              color = {Colors.SECONDARY_GREEN}
-              size = {18}
-              style = {{marginLeft: 5}}
-            />
-        case 'invalid' : {
-          return <AntDesign
-              name = "closecircleo"
-              color = {Colors.DEFAULT_RED}
-              size = {18}
-              style = {{marginLeft: 5}}
-            />
-        }    
-        default:
-            return null
-    }
-}
-
+import { GeneralAction } from '~/actions'
+import { useDispatch } from 'react-redux'
 
 const SigninScreen = ({navigation}) => {
   
@@ -61,14 +19,21 @@ const SigninScreen = ({navigation}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch = useDispatch();
+
   const login = () => {
       let user = { email, password };
       console.log(user);
       setIsLoading(true);
       AuthenticationService.login(user).then((response) => {
         setIsLoading(false);
-        console.log(response);
-        if (!response?.status) {
+        console.log(response?.data);
+        if (response?.status) {
+          StorageService.setFirstTimeUse().then(() => {
+            dispatch(GeneralAction.setToken(response?.data));
+          });
+        }
+        else{
           setErrorMessage(response?.message);
         }
       });
@@ -321,7 +286,6 @@ const styles = StyleSheet.create({
       marginTop: 5,
     },
 
-})
+});
 
-
-export default SigninScreen
+export default SigninScreen;
