@@ -1,0 +1,8 @@
+const types = {
+    ADD_TO_CART: 'ADD_TO_CART',
+    REMOVE_FROM_CART: "REMOVE_FROM_CART",
+    GET_CART_ITEMS: "GET_CART_ITEMS",
+    SET_IS_LOADING: "SET_IS_LOADING",
+}
+
+export {types};

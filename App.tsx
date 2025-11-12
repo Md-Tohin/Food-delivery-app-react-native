@@ -2,7 +2,7 @@ import * as React from 'react';
 import './global.css';
 import Navigators from './src/navigators/index';
 import { useFonts } from 'expo-font';
-import Store from '~/Store';
+import {Store} from '~/Store';
 import { Provider } from 'react-redux';
 
 export default function App() {
