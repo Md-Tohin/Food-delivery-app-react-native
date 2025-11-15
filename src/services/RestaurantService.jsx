@@ -36,4 +36,37 @@ const getRestaurants = async () => {
   }
 };
 
-export default { getRestaurants };
+const getOneRestaurantById = async (restaurantId) => {
+  console.log(`RestaurantsService | getOneRestaurantById`);
+  
+  try { 
+    
+    const { getToken } = await import('../Store');
+
+     let restaurantResponse = await axios.get(
+      `${ApiContents.BACKEND_API.BASE_APP_URL}${ApiContents.BACKEND_API.RESTAURANT}/${restaurantId}`,
+      {
+        headers: authHeader(getToken()),
+      },
+    );
+
+    if (restaurantResponse?.status === 200) {
+      return {
+        status: true,
+        message: `Restaurant data fetched`,
+        data: restaurantResponse?.data?.data,
+      }
+    } else {
+      return {
+        status: false,
+        message: `Restaurant data not found`,
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+    return { status: false, message: 'Restaurant data not found!' };
+  }
+};
+
+export default { getRestaurants, getOneRestaurantById };

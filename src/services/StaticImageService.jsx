@@ -6,5 +6,12 @@ const getPoster = (imageId, quality = ApiContents.STATIC_IMAGES.QUALITY.SD) => `
 const getGelleryImage = (imageId, size, quality = ApiContents.STATIC_IMAGES.QUALITY.SD) => 
     `${ApiContents.STATIC_IMAGES.BASE_URL}/gellery/${size}/${quality}/${imageId}.png`;
 
+const getGalleryImage = (
+  imageId,
+  size,
+  quality = ApiContents.STATIC_IMAGES.QUALITY.SD,
+) =>
+  `${ApiContents.STATIC_IMAGES.BASE_URL}/gallery/${size}/${quality}/${imageId}.png`;
 
-export default {getLogo, getPoster, getGelleryImage}
+
+export default {getLogo, getPoster, getGelleryImage, getGalleryImage}

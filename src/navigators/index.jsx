@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ForgotPasswordScreen, HomeScreen, RegisterPhoneScreen, SigninScreen, SignupScreen, SplashScreen, WelcomeScreen } from '~/screens';
+import { ForgotPasswordScreen, HomeScreen, RegisterPhoneScreen, RestaurantScreen, SigninScreen, SignupScreen, SplashScreen, WelcomeScreen } from '~/screens';
 import { useDispatch, useSelector } from 'react-redux';
 import { GeneralAction } from '~/actions';
 
@@ -34,6 +34,7 @@ const Navigators = () => {
         ) : (
           <>
             <Stack.Screen name="home" component={HomeScreen} />
+            <Stack.Screen name="restaurant" component={RestaurantScreen} />
           </>
         )}
       </Stack.Navigator>
