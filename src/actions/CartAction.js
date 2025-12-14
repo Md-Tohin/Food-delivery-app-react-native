@@ -6,6 +6,8 @@ const types = {
 };
 
 const addToCart = ({foodId}) => {
+  console.log("Food Id: "+ foodId);
+  
   return dispatch => {
     dispatch({
       type: types.SET_IS_LOADING,
@@ -83,4 +85,4 @@ const getCartItems = () => {
   };
 };
 
-export {types, addToCart, removeFromCart, getCartItems};
+export default {types, addToCart, removeFromCart, getCartItems};

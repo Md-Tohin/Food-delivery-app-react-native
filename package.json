@@ -43,7 +43,7 @@
     "typescript": "~5.8.3"
   },
   "projectConfig": {
-    "backendApiBaseUrl": "http://192.168.2.246:3000"
+    "backendApiBaseUrl": "http://192.168.28.25:3000"
   },
   "main": "node_modules/expo/AppEntry.js",
   "private": true

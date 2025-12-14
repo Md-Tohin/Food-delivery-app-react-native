@@ -17,6 +17,7 @@ const FoodCard = ({id, name, description, price, image, navigate}) => {
         ?.count,
   );
   const addToCart = foodId => dispatch(CartAction.addToCart({foodId}));
+  
   const removeFromCart = foodId =>
     dispatch(CartAction.removeFromCart({foodId}));
 

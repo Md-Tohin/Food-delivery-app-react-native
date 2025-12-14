@@ -172,7 +172,7 @@ const RestaurantScreen = (
                     key={item?.id}
                     {...item}
                     navigate={() =>
-                      navigation.navigate('Food', { foodId: item?.id })
+                      navigation.navigate('food', { foodId: item?.id })
                     }
                   />
                 ))}

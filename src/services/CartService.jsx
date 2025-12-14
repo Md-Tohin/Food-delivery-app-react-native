@@ -36,7 +36,7 @@ const getCartItems = async () => {
   }
 };
 
-const addToCart = async () => {
+const addToCart = async ({foodId}) => {
   console.log(`CartService | addToCart`);
   
   try { 
@@ -70,7 +70,7 @@ const addToCart = async () => {
 };
 
 
-const removeFromCart = async () => {
+const removeFromCart = async ({foodId}) => {
   console.log(`CartService | removeFromCart`);
   
   try { 
