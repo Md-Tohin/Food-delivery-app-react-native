@@ -43,7 +43,11 @@
     "typescript": "~5.8.3"
   },
   "projectConfig": {
+<<<<<<< HEAD
     "backendApiBaseUrl": "http://192.168.28.25:3000"
+=======
+    "backendApiBaseUrl": "http://192.168.28.72:3000"
+>>>>>>> origin/limon
   },
   "main": "node_modules/expo/AppEntry.js",
   "private": true
